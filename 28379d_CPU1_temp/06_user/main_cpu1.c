@@ -1,9 +1,12 @@
 //#include "Includes.h"
 
+
+//#include <F2837xD_device.h>
 #include "F2837xD_Ipc_drivers.h"
 
 #include "driverlib.h"
 #include "device.h"
+#include "device_driver.h"
 
 #define delay_s(x) SysCtl_delay(((((long double)(x)) / (1.0L /  \
                               (long double)DEVICE_SYSCLK_FREQ)) - 9.0L) / 5.0L)
@@ -40,6 +43,8 @@ void main(void)
     GPIO_setPadConfig(DEVICE_GPIO_PIN_LED2, GPIO_PIN_TYPE_STD);
     GPIO_setDirectionMode(DEVICE_GPIO_PIN_LED2, GPIO_DIR_MODE_OUT);
 
+    DRIVER.fInit(&DRIVER);
+    DRIVER.fReadStatusReg(&DRIVER);
 
     while(1)
     {
