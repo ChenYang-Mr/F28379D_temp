@@ -1,9 +1,9 @@
 /*
- * @Author       : CY [2584623834@qq.com]
+ * @Author       : CY [yang.chen@dh-robotics.cn]
  * @Date         : 2022-07-08 15:31:52
- * @LastEditors  : CY [2584623834@qq.com]
- * @LastEditTime : 2022-07-08 19:09:26
- * @FilePath     : \simulink_project\Device\Driver\driver_DRV8305.h
+ * @LastEditors  : CY [yang.chen@dh-robotics.cn]
+ * @LastEditTime : 2022-07-15 18:03:51
+ * @FilePath     : \F28379D_temp\28379d_CPU1_temp\06_user\device_driver.h
  * @Description  : 
  * Copyright (c) 2022 by https://www.dh-robotics.com, All Rights Reserved. 
  */
@@ -34,6 +34,7 @@ typedef struct DRIVER_T_
     DRIVER_STATUS_T (*fWriteCtrlReg)(struct DRIVER_T_ *pHandle);
     DRIVER_STATUS_T (*fEnable)(struct DRIVER_T_ *pHandle);
     DRIVER_STATUS_T (*fDisable)(struct DRIVER_T_ *pHandle);
+    DRIVER_STATUS_T (*fPwmSetDuty)(struct DRIVER_T_ *pHandle, float Ta, float Tb, float Tc);
 } DRIVER_T;
 
 

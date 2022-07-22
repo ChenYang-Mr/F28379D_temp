@@ -1,9 +1,9 @@
 /*
- * @Author       : CY [2584623834@qq.com]
+ * @Author       : CY [yang.chen@dh-robotics.cn]
  * @Date         : 2022-07-08 18:11:29
- * @LastEditors  : CY [2584623834@qq.com]
- * @LastEditTime : 2022-07-13 14:58:12
- * @FilePath     : \28379d_CPU1_temp\06_user\driver_spi.h
+ * @LastEditors  : CY [yang.chen@dh-robotics.cn]
+ * @LastEditTime : 2022-07-15 15:28:20
+ * @FilePath     : \F28379D_temp\28379d_CPU1_temp\06_user\driver_spi.h
  * @Description  : 
  * Copyright (c) 2022 by https://www.dh-robotics.com, All Rights Reserved. 
  */
@@ -31,7 +31,7 @@ typedef struct SPI_T_
     SPI_STATUS_T (*fTransfer)(struct SPI_T_  *pHandle, Uint16 wData, Uint16 *rData);
 } SPI_T;
 
-extern SPI_T SPI_28379DSPIA;
+extern SPI_T SPI_28379D_SPIA;
 
 #ifdef __cplusplus
 }

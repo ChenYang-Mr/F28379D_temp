@@ -1,9 +1,9 @@
 /*
- * @Author       : CY [2584623834@qq.com]
+ * @Author       : CY [yang.chen@dh-robotics.cn]
  * @Date         : 2022-07-08 15:31:52
- * @LastEditors  : CY [2584623834@qq.com]
- * @LastEditTime : 2022-07-08 19:09:26
- * @FilePath     : \simulink_project\Device\Driver\driver_DRV8305.h
+ * @LastEditors  : CY [yang.chen@dh-robotics.cn]
+ * @LastEditTime : 2022-07-15 18:12:37
+ * @FilePath     : \F28379D_temp\28379d_CPU1_temp\06_user\driver_DRV8305.h
  * @Description  : 
  * Copyright (c) 2022 by https://www.dh-robotics.com, All Rights Reserved. 
  */
@@ -17,6 +17,7 @@ extern "C" {
 
 #include "driver_spi.h"
 #include "driver_gpio.h"
+#include "driver_pwm.h"
 
 /*****************************************************************************/
 // Register Addresses
@@ -527,15 +528,135 @@ typedef struct{
     DRV8305_Vars RegWrite;
 
     SPI_T	*pSpi;
+	
+    PWM_T *pPwmA;
+    PWM_T *pPwmB;
+    PWM_T *pPwmC;
+
     GPIO_T  *pPin_EnGate;
     GPIO_T  *pPin_Wake;
     GPIO_T  *pPin_SpiSDI;
     GPIO_T  *pPin_SpiSDO;
     GPIO_T  *pPin_SpiCLK;
     GPIO_T  *pPin_SpiSCS;
+
+    GPIO_T  *pPin_PwmAH;
+    GPIO_T  *pPin_PwmAL;
+    GPIO_T  *pPin_PwmBH;
+    GPIO_T  *pPin_PwmBL;
+    GPIO_T  *pPin_PwmCH;
+    GPIO_T  *pPin_PwmCL;
 } DATA_DRV8305_T;
 
 extern DATA_DRV8305_T Data_DRV8305;
+
+#define DRV8305_REG_DEFAULT                                                                             \
+{                                                                                                       \
+    .Rsvd0 								= 0,		/* bit      description */                          \
+                                                                                                        \
+    .status1_wwd.bit.OTW 				= 0,		/* 0    Over temp warning */                        \
+    .status1_wwd.bit.TMP_FLG3 			= 0,		/* 1    temp > 135degC */                           \
+    .status1_wwd.bit.TMP_FLG2 			= 0,		/* 2    temp > 125degC */                           \
+    .status1_wwd.bit.TMP_FLG1 			= 0,		/* 3    temp > 105degC */                           \
+    .status1_wwd.bit.VCHP_UVFL 			= 0,		/* 4    Charge pump UV flag warning */              \
+    .status1_wwd.bit.VDS_STATUS 		= 0,		/* 5    Real time status of VDS sensor */           \
+    .status1_wwd.bit.PVDD_OVFL 			= 0,		/* 6    PVDD ov flag */                             \
+    .status1_wwd.bit.PVDD_UVFL 			= 0,		/* 7    PVDD uv flag */                             \
+    .status1_wwd.bit.TMP_FLG4 			= 0,		/* 8    temp > 175degC */                           \
+    .status1_wwd.bit.Reserve 			= 0,		/* 9 */                                             \
+    .status1_wwd.bit.FAULT 				= 0,		/* 10   Latched fault */                            \
+    .status1_wwd.bit.Reserved2 			= 0,		/* 15-11 */                                         \
+                                                                                                        \
+    .status2_ov_vds.bit.SNS_A_OCP 		= 0,		/* 0    Sense A over current protection flag */     \
+    .status2_ov_vds.bit.SNS_B_OCP 		= 0,		/* 1    Sense B over current protection flag */     \
+    .status2_ov_vds.bit.SNS_C_OCP 		= 0,		/* 2    Sense C over current protection flag */     \
+    .status2_ov_vds.bit.Rerserved 		= 0,		/* 4:3 */                                           \
+    .status2_ov_vds.bit.FETLC_VDS 		= 0,		/* 5    VDS monitor fault - low side FET C */       \
+    .status2_ov_vds.bit.FETHC_VDS 		= 0,		/* 6    VDS monitor fault - high side FET C */      \
+    .status2_ov_vds.bit.FETLB_VDS 		= 0,		/* 7    VDS monitor fault - low side FET B */       \
+    .status2_ov_vds.bit.FETHB_VDS 		= 0,		/* 8    VDS monitor fault - high side FET B */      \
+    .status2_ov_vds.bit.FETLA_VDS 		= 0,		/* 9    VDS monitor fault - low side FET A */       \
+    .status2_ov_vds.bit.FETHA_VDS 		= 0,		/* 10   VDS monitor fault - high side FET A */      \
+    .status2_ov_vds.bit.Reserved2 		= 0,		/* 15-11 */                                         \
+                                                                                                        \
+    .status3_IC.bit.VCPH_OVLO_ABS 		= 0,		/* 0    charge pump high side OV ABS fault */       \
+    .status3_IC.bit.VCPH_OVLO 			= 0,		/* 1    charge pump high side OV fault */           \
+    .status3_IC.bit.VCPH_UVLO 			= 0,		/* 2    charge pump high side UV fault */           \
+    .status3_IC.bit.Reserved 			= 0,		/* 3 */                                             \
+    .status3_IC.bit.VCP_LSD_UVLO 		= 0,		/* 4    charge pump low side gate driver fault */   \
+    .status3_IC.bit.AVDD_UVLO 			= 0,		/* 5    AVDD uv fault */                            \
+    .status3_IC.bit.VREG_UV 			= 0,		/* 6    VREG uv fault */                            \
+    .status3_IC.bit.Reserved2 			= 0,		/* 7 */                                             \
+    .status3_IC.bit.OTS 				= 0,		/* 8    Over temp fault */                          \
+    .status3_IC.bit.WD_FAULT 			= 0,		/* 9    Watchdog fault */                           \
+    .status3_IC.bit.PVDD_UVLO2 			= 0,		/* 10   PVDD uvder uv 2 fault */                    \
+    .status3_IC.bit.Reserved3 			= 0,		/* 15-11 */                                         \
+                                                                                                        \
+    .status4_gd_Vgs.bit.Reserved  		= 0,		/* 4:0 */                                           \
+    .status4_gd_Vgs.bit.FETLC_VGS 		= 0,		/* 5     VGS monitor fault low side FET C */        \
+    .status4_gd_Vgs.bit.FETHC_VGS 		= 0,		/* 6     VGS monitor fault high side FET C */       \
+    .status4_gd_Vgs.bit.FETLB_VGS 		= 0,		/* 7     VGS monitor fault low side FET B */        \
+    .status4_gd_Vgs.bit.FETHB_VGS 		= 0,		/* 8     VGS monitor fault high side FET B */       \
+    .status4_gd_Vgs.bit.FETLA_VGS 		= 0,		/* 9     VGS monitor fault low side FET A */        \
+    .status4_gd_Vgs.bit.FETHA_VGS 		= 0,		/* 10    VGS monitor fault high side FET A */       \
+    .status4_gd_Vgs.bit.Reserved2 		= 0,		/* 15-11 */                                         \
+                                                                                                        \
+    .cntrl5_hs_gd.bit.IDRIVEP_HS 		= 0x4,		/* 3:0   high side gate driver peak source current */   \
+    .cntrl5_hs_gd.bit.IDRIVEN_HS 		= 0x4,		/* 7:4   high side gate driver peak sink current */     \
+    .cntrl5_hs_gd.bit.TDRIVEN    		= 0x3,		/* 9:8   high side gate driver peak source time */      \
+    .cntrl5_hs_gd.bit.Reserved   		= 0,		/* */                                                   \
+    .cntrl5_hs_gd.bit.Reserved2  		= 0,		/* 15-11 */                                             \
+                                                                                                        	\
+    .cntrl6_ls_gd.bit.IDRIVEP_LS 		= 0x4,		/* 3:0   low side gate driver peak source current */    \
+    .cntrl6_ls_gd.bit.IDRIVEN_LS 		= 0x4,		/* 7:4   low side gate driver peak sink current */      \
+    .cntrl6_ls_gd.bit.TDRIVEP    		= 0x3,		/* 9:8   low side gate driver peak source time */       \
+    .cntrl6_ls_gd.bit.Reserved   		= 0,		/* */                                                   \
+    .cntrl6_ls_gd.bit.Reserved2  		= 0,		/* 15-11 */                                             \
+                                                                                                        	\
+    .cntrl7_gd.bit.TVDS     			= 0x2,		/* 1:0    VDS sense deglitch */                         \
+    .cntrl7_gd.bit.TBLANK 				= 0x1,		/* 3:2    VDS sense blanking */                         \
+    .cntrl7_gd.bit.DEAD_TIME 			= 0x1,		/* 6:4    Dead time */                                  \
+    .cntrl7_gd.bit.PWM_MODE 			= 0,		/* 8:7    PWM mode */                                   \
+    .cntrl7_gd.bit.COMM_OPTION 			= 0x1,		/* 9      Rectification control */                      \
+    .cntrl7_gd.bit.Reserved 			= 0,		/* 10 */                                                \
+    .cntrl7_gd.bit.Reserved2 			= 0,		/* 15-11 */                                             \
+                                                                                                        	\
+    .Rsvd8 								= 0,		/* */                                                   \
+                                                                                                        	\
+    .cntrl9_IC_ops.bit.SET_VCPH_UV 		= 0,		/* 0      set charge pump uv threshold level */         \
+    .cntrl9_IC_ops.bit.CLR_FLTS 		= 0,		/* 1      clear faults */                               \
+    .cntrl9_IC_ops.bit.SLEEP 			= 0,		/* 2      put device into sleep mode */                 \
+    .cntrl9_IC_ops.bit.WD_EN 			= 0,		/* 3      watchdog enable */                            \
+    .cntrl9_IC_ops.bit.DIS_SNS_OCP 		= 0,     	/* 4      disable SNS oc fault and reporting */         \
+    .cntrl9_IC_ops.bit.WD_DLY 			= 0x1,      /* 6:5    watchdog delay */                       		\
+    .cntrl9_IC_ops.bit.EN_SNS_CLAMP 	= 0,        /* 7      enable sense amplifier clamp */               \
+    .cntrl9_IC_ops.bit.DIS_GDRV_FAULT 	= 0,      	/* 8      disable gate driver fault and reporting */    \
+    .cntrl9_IC_ops.bit.DIS_VPVDD_UVLO2 	= 0, 		/* 9      disable PVDD_UVLO2 fault and reporting */     \
+    .cntrl9_IC_ops.bit.Flip_OTS 		= 0,        /* 10     enable OTS */                             	\
+    .cntrl9_IC_ops.bit.Reserved2 		= 0,        /* 15-11 */                                          	\
+                                                                                                        	\
+    .cntrlA_shunt_amp.bit.GAIN_CS1 		= 0,        /* 1:0    gain of CS amplifier 1 */                    	\
+    .cntrlA_shunt_amp.bit.GAIN_CS2 		= 0,        /* 3:2    gain of CS amplifier 2 */                    	\
+    .cntrlA_shunt_amp.bit.GAIN_CS3 		= 0,        /* 5:4    gain of CS amplifier 3 */                    	\
+    .cntrlA_shunt_amp.bit.CS_BLANK 		= 0,        /* 7:6    current shunt amplifier blanking time */     	\
+    .cntrlA_shunt_amp.bit.DC_CAL_CH1 	= 0,        /* 8      DC cal of CS amplifier 1 */               	\
+    .cntrlA_shunt_amp.bit.DC_CAL_CH2 	= 0,        /* 9      DC cal of CS amplifier 2 */               	\
+    .cntrlA_shunt_amp.bit.DC_CAL_CH3 	= 0,        /* 10     DC cal of CS amplifier 3 */               	\
+    .cntrlA_shunt_amp.bit.Reserved2 	= 0,        /* 15-11 */                                         	\
+                                                                                                        	\
+    .cntrlB_Vreg.bit.VREG_UV_LEVEL 		= 0x2,    	/* 1:0    VREG uv set point */                          \
+    .cntrlB_Vreg.bit.DIS_VREG_PWRGD 	= 0,        /* 2 */                                                 \
+    .cntrlB_Vreg.bit.SLEEP_DLY 			= 0x1,      /* 4:3    Delay to power down VREG after SLEEP */      	\
+    .cntrlB_Vreg.bit.Reserved 			= 0,        /* 7:5 */                                             	\
+    .cntrlB_Vreg.bit.VREF_SCALING 		= 0x1,      /* 9:8    VREF scaling */                               \
+    .cntrlB_Vreg.bit.Reserved2 			= 0,        /* 10 */                                               	\
+    .cntrlB_Vreg.bit.Reserved3 			= 0,        /* 15-11 */                                            	\
+                                                                                                        	\
+    .cntrlC_Vds_SNS.bit.VDS_MODE 		= 0,        /* 0      VDS mode */                                	\
+    .cntrlC_Vds_SNS.bit.VDS_LEVEL 		= 0x19,     /* 0      VDS comparator threshold */                 	\
+    .cntrlC_Vds_SNS.bit.Reserved 		= 0,        /* 0 */                                              	\
+    .cntrlC_Vds_SNS.bit.Reserved2 		= 0,        /* 15-11 */                                           	\
+}
 
 #ifdef __cplusplus
 }

@@ -1,9 +1,9 @@
 /*
- * @Author       : CY [2584623834@qq.com]
+ * @Author       : CY [yang.chen@dh-robotics.cn]
  * @Date         : 2022-07-13 14:17:04
- * @LastEditors  : CY [2584623834@qq.com]
- * @LastEditTime : 2022-07-13 17:29:50
- * @FilePath     : \28379d_CPU1_temp\06_user\driver_gpio.h
+ * @LastEditors  : CY [yang.chen@dh-robotics.cn]
+ * @LastEditTime : 2022-07-15 17:55:13
+ * @FilePath     : \F28379D_temp\28379d_CPU1_temp\06_user\driver_gpio.h
  * @Description  : gpio driver
  * Copyright (c) 2022 by https://www.dh-robotics.com, All Rights Reserved. 
  */
@@ -37,13 +37,18 @@ typedef struct GPIO_T_
     GPIO_STATUS_T (*fRead)(struct GPIO_T_  *pHandle, Uint16 *pRVal);
 } GPIO_T;
 
-extern GPIO_T GPIO_28379D;
-extern GPIO_T GPIO_DRV8305_EN_GATE;
-extern GPIO_T GPIO_DRV8305_WAKE;
-extern GPIO_T GPIO_DRV8305_SpiSDI;
-extern GPIO_T GPIO_DRV8305_SpiSDO;
-extern GPIO_T GPIO_DRV8305_SpiCLK;
-extern GPIO_T GPIO_DRV8305_SpiSCS;
+extern GPIO_T GPIO_F28379D_EN_GATE;
+extern GPIO_T GPIO_F28379D_WAKE;
+extern GPIO_T GPIO_F28379D_SpiSDI;
+extern GPIO_T GPIO_F28379D_SpiSDO;
+extern GPIO_T GPIO_F28379D_SpiCLK;
+extern GPIO_T GPIO_F28379D_SpiSCS;
+extern GPIO_T GPIO_F28379D_PWM1H;
+extern GPIO_T GPIO_F28379D_PWM1L;
+extern GPIO_T GPIO_F28379D_PWM2H;
+extern GPIO_T GPIO_F28379D_PWM2L;
+extern GPIO_T GPIO_F28379D_PWM3H;
+extern GPIO_T GPIO_F28379D_PWM3L;
 
 #ifdef __cplusplus
 }

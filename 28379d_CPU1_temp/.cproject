@@ -88,7 +88,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="06_user/main_cpu1.cpp|01_cmd/2837xD_FLASH_lnk_cpu1.cmd|01_cmd/2837xD_FLASH_lnk_cpu2.cmd|04_common/source/F2837xD_PieVect.c|04_common/source/F2837xD_PieCtrl.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="06_user/main_cpu1.c|04_common/source/F2837xD_SWPrioritizedPieVect.c|06_user/main_cpu1.cpp|01_cmd/2837xD_FLASH_lnk_cpu1.cmd|01_cmd/2837xD_FLASH_lnk_cpu2.cmd" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -122,7 +122,7 @@
 							</option>
 							<option id="com.ti.ccstudio.buildDefinitions.core.OPT_CODEGEN_VERSION.1120036056" name="Compiler version" superClass="com.ti.ccstudio.buildDefinitions.core.OPT_CODEGEN_VERSION" value="21.6.0.LTS" valueType="string"/>
 							<targetPlatform id="com.ti.ccstudio.buildDefinitions.C2000_21.6.exe.targetPlatformRelease.234358856" name="Platform" superClass="com.ti.ccstudio.buildDefinitions.C2000_21.6.exe.targetPlatformRelease"/>
-							<builder buildPath="${BuildDirectory}" id="com.ti.ccstudio.buildDefinitions.C2000_21.6.exe.builderRelease.1603033213" keepEnvironmentInBuildfile="false" name="GNU Make" parallelBuildOn="true" parallelizationNumber="optimal" superClass="com.ti.ccstudio.buildDefinitions.C2000_21.6.exe.builderRelease"/>
+							<builder arguments="" buildPath="${BuildDirectory}" command="${CCS_UTILS_DIR}/bin/gmake" id="com.ti.ccstudio.buildDefinitions.C2000_21.6.exe.builderRelease.1603033213" keepEnvironmentInBuildfile="false" name="GNU Make" parallelBuildOn="true" parallelizationNumber="optimal" superClass="com.ti.ccstudio.buildDefinitions.C2000_21.6.exe.builderRelease"/>
 							<tool id="com.ti.ccstudio.buildDefinitions.C2000_21.6.exe.compilerRelease.165156595" name="C2000 Compiler" superClass="com.ti.ccstudio.buildDefinitions.C2000_21.6.exe.compilerRelease">
 								<option id="com.ti.ccstudio.buildDefinitions.C2000_21.6.compilerID.LARGE_MEMORY_MODEL.1888966269" name="Option deprecated, set by default (--large_memory_model, -ml)" superClass="com.ti.ccstudio.buildDefinitions.C2000_21.6.compilerID.LARGE_MEMORY_MODEL" value="true" valueType="boolean"/>
 								<option id="com.ti.ccstudio.buildDefinitions.C2000_21.6.compilerID.UNIFIED_MEMORY.525213399" name="Unified memory (--unified_memory, -mt)" superClass="com.ti.ccstudio.buildDefinitions.C2000_21.6.compilerID.UNIFIED_MEMORY" value="true" valueType="boolean"/>
@@ -137,6 +137,7 @@
 									<listOptionValue builtIn="false" value="${PROJECT_ROOT}/03_device/include"/>
 									<listOptionValue builtIn="false" value="${PROJECT_ROOT}/04_common/include"/>
 									<listOptionValue builtIn="false" value="${PROJECT_ROOT}/05_headers/include"/>
+									<listOptionValue builtIn="false" value="${PROJECT_ROOT}/06_user"/>
 								</option>
 								<option id="com.ti.ccstudio.buildDefinitions.C2000_21.6.compilerID.ADVICE__PERFORMANCE.1356805667" name="Provide advice on optimization techniques (--advice:performance)" superClass="com.ti.ccstudio.buildDefinitions.C2000_21.6.compilerID.ADVICE__PERFORMANCE" value="--advice:performance=all" valueType="string"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.ti.ccstudio.buildDefinitions.C2000_21.6.compilerID.DEFINE.1782638845" name="Pre-define NAME (--define, -D)" superClass="com.ti.ccstudio.buildDefinitions.C2000_21.6.compilerID.DEFINE" valueType="definedSymbols">
@@ -182,7 +183,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="06_user/main_cpu1.c|01_cmd/2837xD_RAM_lnk_cpu1.cmd|01_cmd/2837xD_RAM_lnk_cpu2.cmd|04_common/source/F2837xD_PieVect.c|04_common/source/F2837xD_PieCtrl.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="06_user/main_cpu1.c|06_user/main_cpu1.cpp|04_common/source/F2837xD_SWPrioritizedPieVect.c|01_cmd/2837xD_RAM_lnk_cpu1.cmd|01_cmd/2837xD_RAM_lnk_cpu2.cmd" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

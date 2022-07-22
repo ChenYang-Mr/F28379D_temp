@@ -1,7 +1,7 @@
 /*
- * @Author       : CY [2584623834@qq.com]
+ * @Author       : CY [yang.chen@dh-robotics.cn]
  * @Date         : 2022-07-08 18:11:29
- * @LastEditors  : CY [2584623834@qq.com]
+ * @LastEditors  : CY [yang.chen@dh-robotics.cn]
  * @LastEditTime : 2022-07-13 14:22:18
  * @FilePath     : \28379d_CPU1_temp\06_user\spi_F28379DSpi.h
  * @Description  : 
@@ -20,9 +20,11 @@ extern "C" {
 
 typedef struct
 {
+    Uint16 SpiNum;
+    Uint16 cpu;
     volatile struct SPI_REGS  * pRegs;
 
-    volatile unsigned int MaxTimeOverCount;
+    volatile Uint32 MaxTimeOverCount;
 } DATA_F28379SPI_T;
 
 extern DATA_F28379SPI_T Data_F28379SpiA;
