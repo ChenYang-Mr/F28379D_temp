@@ -124,7 +124,7 @@ extern void ReleaseFlashPump(void);
 //
 //LPM functions in F2837xD_SysCtrl.c
 //
-void IDLE();
+//void IDLE(void);
 void STANDBY();
 void HALT();
 void HIB();

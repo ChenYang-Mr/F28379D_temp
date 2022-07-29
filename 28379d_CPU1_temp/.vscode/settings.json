@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "*.txt": "cmake",
+        "application_protection.h": "c",
+        "device_memory.h": "c",
+        "memory_on_chip_flash.h": "c",
+        "f28x_project.h": "c",
+        "f021_f2837xd_c28x.h": "c",
+        "memory_onchipflash.h": "c"
+    }
+}

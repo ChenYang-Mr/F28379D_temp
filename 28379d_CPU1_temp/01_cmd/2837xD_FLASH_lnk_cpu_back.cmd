@@ -112,27 +112,17 @@ SECTIONS
 #ifdef __TI_COMPILER_VERSION__
     #if __TI_COMPILER_VERSION__ >= 15009000
         #if defined(__TI_EABI__)
-					       GROUP
-					       {
-					           .TI.ramfunc
-					           { -l F021_API_F2837xD_FPU32.lib}
-
-			        	   } LOAD = FLASHD,
-                             RUN = RAMLS0,
-                             LOAD_START(RamfuncsLoadStart),
-                             LOAD_SIZE(RamfuncsLoadSize),
-                             LOAD_END(RamfuncsLoadEnd),
-                             RUN_START(RamfuncsRunStart),
-                             RUN_SIZE(RamfuncsRunSize),
-                             RUN_END(RamfuncsRunEnd),
-                             PAGE = 0, ALIGN(8)
+            .TI.ramfunc : {} LOAD = FLASHD,
+                                 RUN = RAMLS0,
+                                 LOAD_START(RamfuncsLoadStart),
+                                 LOAD_SIZE(RamfuncsLoadSize),
+                                 LOAD_END(RamfuncsLoadEnd),
+                                 RUN_START(RamfuncsRunStart),
+                                 RUN_SIZE(RamfuncsRunSize),
+                                 RUN_END(RamfuncsRunEnd),
+                                 PAGE = 0, ALIGN(8)
         #else
-					       GROUP
-					       {
-					           .TI.ramfunc
-					           { -l F021_API_F2837xD_FPU32.lib}
-
-			        	   } LOAD = FLASHD,
+            .TI.ramfunc : {} LOAD = FLASHD,
                              RUN = RAMLS0,
                              LOAD_START(_RamfuncsLoadStart),
                              LOAD_SIZE(_RamfuncsLoadSize),
@@ -143,12 +133,7 @@ SECTIONS
                              PAGE = 0, ALIGN(8)
         #endif
     #else
-				       GROUP
-				       {
-				           ramfuncs
-				           { -l F021_API_F2837xD_FPU32.lib}
-
-		        	   } LOAD = FLASHD,
+   ramfuncs            : LOAD = FLASHD,
                          RUN = RAMLS0,
                          LOAD_START(_RamfuncsLoadStart),
                          LOAD_SIZE(_RamfuncsLoadSize),
