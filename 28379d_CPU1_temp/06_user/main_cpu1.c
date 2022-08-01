@@ -89,10 +89,10 @@ void main(void)
     InitPieVectTable();
 
     /* memory */
-//    MEMORY.fInit(&MEMORY);
+    MEMORY.fInit(&MEMORY);
 //    MEMORY.fWrite(&MEMORY);
-//    MEMORY.fRead(&MEMORY);
-    OnChipFlash_Write();
+    MEMORY.fRead(&MEMORY);
+//    OnChipFlash_Write();
 }
 #if 0
 //

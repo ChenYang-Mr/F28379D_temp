@@ -8,10 +8,11 @@ PAGE 0 :  /* Program Memory */
    BEGIN           	: origin = 0x080000, length = 0x000002
    RAMM0           	: origin = 0x000123, length = 0x0002DD
    RAMD0           	: origin = 0x00B000, length = 0x000800
-   RAMLS0          	: origin = 0x008000, length = 0x000800
+   RAMLS03			: origin = 0x008000, length = 0x002000
+/*   RAMLS0          	: origin = 0x008000, length = 0x000800
    RAMLS1          	: origin = 0x008800, length = 0x000800
    RAMLS2      		: origin = 0x009000, length = 0x000800
-   RAMLS3      		: origin = 0x009800, length = 0x000800
+   RAMLS3      		: origin = 0x009800, length = 0x000800 */
    RAMLS4      		: origin = 0x00A000, length = 0x000800
    RAMGS14          : origin = 0x01A000, length = 0x001000     /* Only Available on F28379D, F28377D, F28375D devices. Remove line on other devices. */
    RAMGS15          : origin = 0x01B000, length = 0x000FF8     /* Only Available on F28379D, F28377D, F28375D devices. Remove line on other devices. */
@@ -75,25 +76,25 @@ PAGE 1 : /* Data Memory */
 SECTIONS
 {
    /* Allocate program areas: */
-   .cinit              : > FLASHB      PAGE = 0, ALIGN(8)
-   .text               : >> FLASHB | FLASHC | FLASHD | FLASHE      PAGE = 0, ALIGN(8)
+   .cinit              : > FLASHD      PAGE = 0, ALIGN(8)
+   .text               : >> FLASHD | FLASHE | FLASHF | FLASHG      PAGE = 0, ALIGN(8)
    codestart           : > BEGIN       PAGE = 0, ALIGN(8)
    /* Allocate uninitalized data sections: */
    .stack              : > RAMM1       PAGE = 1
-   .switch             : > FLASHB      PAGE = 0, ALIGN(8)
+   .switch             : > FLASHD      PAGE = 0, ALIGN(8)
    .reset              : > RESET,      PAGE = 0, TYPE = DSECT /* not used, */
 
 #if defined(__TI_EABI__)
-   .init_array         : > FLASHB,       PAGE = 0,       ALIGN(8)
+   .init_array         : > FLASHD,       PAGE = 0,       ALIGN(8)
    .bss                : > RAMLS5,       PAGE = 1
-   .bss:output         : > RAMLS3,       PAGE = 0
+   .bss:output         : > RAMLS4,       PAGE = 0
    .bss:cio            : > RAMLS5,       PAGE = 1
    .data               : > RAMLS5,       PAGE = 1
    .sysmem             : > RAMLS5,       PAGE = 1
    /* Initalized sections go in Flash */
    .const              : > FLASHF,       PAGE = 0,       ALIGN(8)
 #else
-   .pinit              : > FLASHB,       PAGE = 0,       ALIGN(8)
+   .pinit              : > FLASHD,       PAGE = 0,       ALIGN(8)
    .ebss               : >> RAMLS5 | RAMGS0 | RAMGS1,    PAGE = 1
    .esysmem            : > RAMLS5,       PAGE = 1
    .cio                : > RAMLS5,       PAGE = 1
@@ -117,8 +118,8 @@ SECTIONS
 					           .TI.ramfunc
 					           { -l F021_API_F2837xD_FPU32.lib}
 
-			        	   } LOAD = FLASHD,
-                             RUN = RAMLS0,
+			        	   } LOAD = FLASHE,
+                             RUN = RAMLS03,
                              LOAD_START(RamfuncsLoadStart),
                              LOAD_SIZE(RamfuncsLoadSize),
                              LOAD_END(RamfuncsLoadEnd),
@@ -132,8 +133,8 @@ SECTIONS
 					           .TI.ramfunc
 					           { -l F021_API_F2837xD_FPU32.lib}
 
-			        	   } LOAD = FLASHD,
-                             RUN = RAMLS0,
+			        	   } LOAD = FLASHE,
+                             RUN = RAMLS03,
                              LOAD_START(_RamfuncsLoadStart),
                              LOAD_SIZE(_RamfuncsLoadSize),
                              LOAD_END(_RamfuncsLoadEnd),
@@ -148,8 +149,8 @@ SECTIONS
 				           ramfuncs
 				           { -l F021_API_F2837xD_FPU32.lib}
 
-		        	   } LOAD = FLASHD,
-                         RUN = RAMLS0,
+		        	   } LOAD = FLASHE,
+                         RUN = RAMLS03,
                          LOAD_START(_RamfuncsLoadStart),
                          LOAD_SIZE(_RamfuncsLoadSize),
                          LOAD_END(_RamfuncsLoadEnd),
