@@ -27,15 +27,17 @@
     #endif
 #endif
 
+#if 1
 //
 // Globals
 //
 //#pragma DATA_SECTION(Buffer,"BufferDataSection");
 Uint16   Buffer[WORDS_IN_FLASH_BUFFER + 1];
-uint32   *Buffer32 = (uint32 *)Buffer;
+// uint32   *Buffer32 = (uint32 *)Buffer;
 //#pragma DATA_SECTION(ReadBuffer,"BufferDataSection");
 Uint16   ReadBuffer[WORDS_IN_FLASH_BUFFER + 1];
-uint32   *ReadBuffer32 = (uint32 *)ReadBuffer;
+// uint32   *ReadBuffer32 = (uint32 *)ReadBuffer;
+#endif
 
 DATA_ONCHIPFLASH_T Data_OnChipFlash = {
        .MaxDelayCount = 50000,
@@ -45,6 +47,7 @@ DATA_ONCHIPFLASH_T Data_OnChipFlash = {
 MEMORY_STATUS_T OnChipFlash_Init(MEMORY_T *pHandle)
 {
     MEMORY_STATUS_T status = MEMORY_SUCCESS;
+    Uint16 BuffCount = 0;
 
     //
     // Call flash initialization to setup flash wait states.
@@ -52,9 +55,41 @@ MEMORY_STATUS_T OnChipFlash_Init(MEMORY_T *pHandle)
     //
     InitFlash();
 
+    pHandle->DataRead.Mdata1    = (int16*)(pHandle->pData_OnChipFlash->RDataBuff + BuffCount);
+    pHandle->DataWrite.Mdata1   = (int16*)(pHandle->pData_OnChipFlash->WDataBuff + BuffCount);
+    BuffCount += 2;
+
+    pHandle->DataRead.Mdata2    = (int32*)(pHandle->pData_OnChipFlash->RDataBuff + BuffCount);
+    pHandle->DataWrite.Mdata2   = (int32*)(pHandle->pData_OnChipFlash->WDataBuff + BuffCount);
+    BuffCount += 4;
+
+    pHandle->DataRead.Mdata3    = (int64*)(pHandle->pData_OnChipFlash->RDataBuff + BuffCount);
+    pHandle->DataWrite.Mdata3   = (int64*)(pHandle->pData_OnChipFlash->WDataBuff + BuffCount);
+    BuffCount += 8;
+
+    pHandle->DataRead.Mdata4    = (Uint16*)(pHandle->pData_OnChipFlash->RDataBuff + BuffCount);
+    pHandle->DataWrite.Mdata4   = (Uint16*)(pHandle->pData_OnChipFlash->WDataBuff + BuffCount);
+    BuffCount += 2;
+
+    pHandle->DataRead.Mdata5    = (Uint32*)(pHandle->pData_OnChipFlash->RDataBuff + BuffCount);
+    pHandle->DataWrite.Mdata5   = (Uint32*)(pHandle->pData_OnChipFlash->WDataBuff + BuffCount);
+    BuffCount += 4;
+
+    pHandle->DataRead.Mdata6    = (Uint64*)(pHandle->pData_OnChipFlash->RDataBuff + BuffCount);
+    pHandle->DataWrite.Mdata6   = (Uint64*)(pHandle->pData_OnChipFlash->WDataBuff + BuffCount);
+    BuffCount += 8;
+
+    pHandle->DataRead.Mdata7    = (float32*)(pHandle->pData_OnChipFlash->RDataBuff + BuffCount);
+    pHandle->DataWrite.Mdata7   = (float32*)(pHandle->pData_OnChipFlash->WDataBuff + BuffCount);
+    BuffCount += 4;
+
+    pHandle->DataRead.Mdata8    = (float64*)(pHandle->pData_OnChipFlash->RDataBuff + BuffCount);
+    pHandle->DataWrite.Mdata8   = (float64*)(pHandle->pData_OnChipFlash->WDataBuff + BuffCount);
+    BuffCount += 8;
+
     return(status);
 }
-#if 1
+
 #pragma CODE_SECTION(OnChipFlash_Read, ramFuncSection);
 MEMORY_STATUS_T OnChipFlash_Read(MEMORY_T *pHandle)
 {
@@ -65,7 +100,8 @@ MEMORY_STATUS_T OnChipFlash_Read(MEMORY_T *pHandle)
     uint16 i = 0U;
     Fapi_StatusType oReturnCheck;
     volatile Fapi_FlashStatusType oFlashStatus;
-    Fapi_FlashStatusWordType oFlashStatusWord;
+    uint32   *Buffer32 = (uint32 *)pHandle->pData_OnChipFlash->RDataBuff;
+    uint32   *Buffer32_cach = (uint32 *)pHandle->pData_OnChipFlash->RDataBuff;
 
     //
     // Grab flash semaphore for Zone1 to enable access to flash registers.
@@ -109,14 +145,13 @@ MEMORY_STATUS_T OnChipFlash_Read(MEMORY_T *pHandle)
        (u32Index < (Bzero_SectorC_start + WORDS_IN_FLASH_BUFFER))
        && (oReturnCheck == Fapi_Status_Success); i+= 8, u32Index+= 8)
     {
-
         oReturnCheck = Fapi_doMarginRead(
                 (uint32 *)u32Index, //uint32 *pu32StartAddress,
-                ReadBuffer32+(i/2), //uint32 *pu32ReadBuffer,
+                Buffer32_cach, //uint32 *pu32ReadBuffer,
                 4,                  //uint32 u32Length,
                 Fapi_NormalRead     //Fapi_FlashReadMarginModeType oReadMode
                 );
-
+        Buffer32_cach = Buffer32+(i/2);
         if(oReturnCheck != Fapi_Status_Success)
         {
             return status = MEMORY_FAULT;
@@ -137,7 +172,6 @@ MEMORY_STATUS_T OnChipFlash_Read(MEMORY_T *pHandle)
 
     return(status);
 }
-#endif
 
 #pragma CODE_SECTION(OnChipFlash_Write, ramFuncSection);
 MEMORY_STATUS_T OnChipFlash_Write(MEMORY_T *pHandle)
@@ -150,13 +184,28 @@ MEMORY_STATUS_T OnChipFlash_Write(MEMORY_T *pHandle)
     Fapi_StatusType oReturnCheck;
     volatile Fapi_FlashStatusType oFlashStatus;
     Fapi_FlashStatusWordType oFlashStatusWord;
+     uint16   *Buffer16 = (uint16 *)pHandle->pData_OnChipFlash->WDataBuff;
+     uint32   *Buffer32 = (uint32 *)pHandle->pData_OnChipFlash->WDataBuff;
+    // uint16   *Buffer16_cach = (uint16 *)pHandle->pData_OnChipFlash->WDataBuff;
+    // uint32   *Buffer32_cach = (uint32 *)pHandle->pData_OnChipFlash->WDataBuff;
+     uint32   *ReadBuffer32 = (uint32 *)pHandle->pData_OnChipFlash->RDataBuff;
 
+//    uint32   *Buffer32 = (uint32 *)Buffer;
+//    uint32   *ReadBuffer32 = (uint32 *)ReadBuffer;
     //
     // Grab flash semaphore for Zone1 to enable access to flash registers.
     //
     EALLOW;
     DcsmCommonRegs.FLSEM.all = 0xA501;
     EDIS;
+
+    
+
+    //
+    // Call flash initialization to setup flash waitstates.
+    // This function must reside in RAM.
+    //
+    InitFlash();
 
     //
     // Disable ECC.
@@ -186,7 +235,7 @@ MEMORY_STATUS_T OnChipFlash_Write(MEMORY_T *pHandle)
         return status = MEMORY_FAULT;
     }
 
-#if 0
+#if 1
     //
     // Erase Sector C.
     //
@@ -221,6 +270,12 @@ MEMORY_STATUS_T OnChipFlash_Write(MEMORY_T *pHandle)
     }
 #endif
 
+
+    for(i=0;i<=WORDS_IN_FLASH_BUFFER;i++)
+    {
+        Buffer[i] = i;
+    }
+
     //
     // Program buffer into Sector C with ECC.
     //
@@ -228,16 +283,21 @@ MEMORY_STATUS_T OnChipFlash_Write(MEMORY_T *pHandle)
        (u32Index < (Bzero_SectorC_start + WORDS_IN_FLASH_BUFFER))
        && (oReturnCheck == Fapi_Status_Success); i+= 8, u32Index+= 8)
     {
+
         oReturnCheck = Fapi_issueProgrammingCommand((uint32 *)u32Index,
-                       Buffer+i,
+                       Buffer16+i,
                        8,
                        0,
                        0,
                        Fapi_AutoEccGeneration);
-
         //
         // Wait until FSM is done with program operation.
         //
+        if(oReturnCheck != Fapi_Status_Success)
+        {
+            return status = MEMORY_FAULT;
+        }
+
         delayCount = 0;
         while(Fapi_checkFsmForReady() == Fapi_Status_FsmBusy)
         {
@@ -248,20 +308,13 @@ MEMORY_STATUS_T OnChipFlash_Write(MEMORY_T *pHandle)
             }
         }
 
-
-        if(oReturnCheck != Fapi_Status_Success)
-        {
-            return status = MEMORY_FAULT;
-        }
-
-        /*get data*/
+        /*read data*/
         oReturnCheck = Fapi_doMarginRead(
                 (uint32 *)u32Index, //uint32 *pu32StartAddress,
                 ReadBuffer32+(i/2), //uint32 *pu32ReadBuffer,
                 4,                  //uint32 u32Length,
                 Fapi_NormalRead     //Fapi_FlashReadMarginModeType oReadMode
                 );
-
         if(oReturnCheck != Fapi_Status_Success)
         {
             return status = MEMORY_FAULT;
@@ -282,7 +335,6 @@ MEMORY_STATUS_T OnChipFlash_Write(MEMORY_T *pHandle)
                        4,
                        Buffer32+(i/2),
                        &oFlashStatusWord);
-
         if(oReturnCheck != Fapi_Status_Success)
         {
             return status = MEMORY_FAULT;

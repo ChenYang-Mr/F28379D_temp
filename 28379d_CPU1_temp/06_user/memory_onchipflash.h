@@ -74,7 +74,10 @@ extern "C" {
 
 
 typedef struct{
+    Uint16 WDataBuff[WORDS_IN_FLASH_BUFFER + 1];
+    Uint16 RDataBuff[WORDS_IN_FLASH_BUFFER + 1];
     Uint32 MaxDelayCount;//0-4294967295
+
 } DATA_ONCHIPFLASH_T;
 
 extern DATA_ONCHIPFLASH_T Data_OnChipFlash;

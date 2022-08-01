@@ -33,21 +33,21 @@ MEMORY_T MEMORY = {
     .fInit  = OnChipFlash_Init,
     .fRead  = OnChipFlash_Read,
     .fWrite = OnChipFlash_Write,
-
-
-    .Data[0] = (Uint32*)&Mdata1,
-    .Data[1] = (Uint32*)&Mdata2,
-//    .Data[2] = (Uint32*)&Mdata3,
-    .Data[3] = (Uint32*)&Mdata4,
-    .Data[4] = (Uint32*)&Mdata5,
-    .Data[5] = (Uint32*)&Mdata6,
-
-    .Data[6] = (Uint32*)&Mdata7,
-    .Data[7] = ((Uint32*)&Mdata7) + 1,
-    .Data[8] = (Uint32*)&Mdata8,
-    .Data[6] = ((Uint32*)&Mdata8) + 1,
-    .Data[7] = (Uint32*)&Mdata9,
-    .Data[8] = ((Uint32*)&Mdata9) +1
+//
+//
+//    .Data[0] = (Uint32*)&Mdata1,
+//    .Data[1] = (Uint32*)&Mdata2,
+////    .Data[2] = (Uint32*)&Mdata3,
+//    .Data[3] = (Uint32*)&Mdata4,
+//    .Data[4] = (Uint32*)&Mdata5,
+//    .Data[5] = (Uint32*)&Mdata6,
+//
+//    .Data[6] = (Uint32*)&Mdata7,
+//    .Data[7] = ((Uint32*)&Mdata7) + 1,
+//    .Data[8] = (Uint32*)&Mdata8,
+//    .Data[6] = ((Uint32*)&Mdata8) + 1,
+//    .Data[7] = (Uint32*)&Mdata9,
+//    .Data[8] = ((Uint32*)&Mdata9) +1
 };
 // MEMORY_STATUS_T Memory_Mapping(MEMORY_T *pHandle)
 // {

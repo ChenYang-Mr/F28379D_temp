@@ -2,7 +2,7 @@
  * @Author       : CY [yang.chen@dh-robotics.cn]
  * @Date         : 2022-07-08 19:15:35
  * @LastEditors  : CY [yang.chen@dh-robotics.cn]
- * @LastEditTime : 2022-07-16 14:55:35
+ * @LastEditTime : 2022-08-01 20:15:58
  * @FilePath     : \F28379D_temp\28379d_CPU1_temp\06_user\main_cpu1.c
  * @Description  : 
  * Copyright (c) 2022 by https://www.dh-robotics.com, All Rights Reserved. 
@@ -24,6 +24,15 @@
 
 //#define delay_s(x) SysCtl_delay(((((long double)(x)) / (1.0L /  \
 //                              (long double)DEVICE_SYSCLK_FREQ)) - 9.0L) / 5.0L)
+
+int16 Data1;
+int32 Data2;
+int64 Data3;
+Uint16 Data4;
+Uint32 Data5;
+Uint64 Data6;
+float32 Data7;
+float64 Data8;
 
 void OnChipFlash_Write(void);
 void main(void)
@@ -87,12 +96,31 @@ void main(void)
     // Interrupt Service Routines (ISR).
     //
     InitPieVectTable();
+    MEMORY_T  *pHandle = &MEMORY;
 
     /* memory */
     MEMORY.fInit(&MEMORY);
-//    MEMORY.fWrite(&MEMORY);
-    MEMORY.fRead(&MEMORY);
-//    OnChipFlash_Write();
+    (*pHandle->DataWrite.Mdata1) = -1;
+    (*pHandle->DataWrite.Mdata2) = -2;
+    (*pHandle->DataWrite.Mdata3) = -3;
+    (*pHandle->DataWrite.Mdata4) = 4;
+    (*pHandle->DataWrite.Mdata5) = 5;
+    (*pHandle->DataWrite.Mdata6) = 6;
+    (*pHandle->DataWrite.Mdata7) = 7.5;
+    (*pHandle->DataWrite.Mdata8) = 8.5;
+
+    MEMORY.fWrite(&MEMORY);
+    // MEMORY.fRead(&MEMORY);
+
+    Data1 = (*pHandle->DataRead.Mdata1);
+    Data2 = (*pHandle->DataRead.Mdata2);
+    Data3 = (*pHandle->DataRead.Mdata3);
+    Data4 = (*pHandle->DataRead.Mdata4);
+    Data5 = (*pHandle->DataRead.Mdata5);
+    Data6 = (*pHandle->DataRead.Mdata6);
+    Data7 = (*pHandle->DataRead.Mdata7);
+    Data8 = (*pHandle->DataRead.Mdata8);
+
 }
 #if 0
 //

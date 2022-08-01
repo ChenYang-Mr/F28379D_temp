@@ -31,23 +31,32 @@ typedef enum
 
 #define MAX_MEMORY_DATA_SUM (0xFF)
 
-//typedef struct {
-//
-//
-//}
+typedef struct {
+    int16   *Mdata1;
+    int32   *Mdata2;
+    int64  *Mdata3;
+    Uint16  *Mdata4;
+    Uint32  *Mdata5;
+    Uint64 *Mdata6;
+    float32 *Mdata7;
+    float64  *Mdata8;
+} MEMORY_DATA_T;
 
 typedef struct MEMORY_T_
 {
     DATA_ONCHIPFLASH_T *pData_OnChipFlash;
 
     MEMORY_STATUS_T MemoryStatus;
-    Uint32 *Data[MAX_MEMORY_DATA_SUM];
-
-    MEMORY_STATUS_T (*fMapping)(struct MEMORY_T_ *pHandle);
+    MEMORY_DATA_T DataRead;
+    MEMORY_DATA_T DataWrite;
+//    Uint32 *Data[MAX_MEMORY_DATA_SUM];
+//
+//    MEMORY_STATUS_T (*fMapping)(struct MEMORY_T_ *pHandle);
     MEMORY_STATUS_T (*fInit)(struct MEMORY_T_ *pHandle);
     MEMORY_STATUS_T (*fRead)(struct MEMORY_T_ *pHandle);
     MEMORY_STATUS_T (*fWrite)(struct MEMORY_T_ *pHandle);
 } MEMORY_T;
+
 
 
 extern MEMORY_T MEMORY;
