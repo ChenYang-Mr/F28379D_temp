@@ -2,8 +2,8 @@
  * @Author       : CY [yang.chen@dh-robotics.cn]
  * @Date         : 2022-07-08 15:31:52
  * @LastEditors  : CY [yang.chen@dh-robotics.cn]
- * @LastEditTime : 2022-07-29 11:15:16
- * @FilePath     : \28379d_CPU1_temp\06_user\memory_onchipflash.h
+ * @LastEditTime : 2022-08-02 14:09:49
+ * @FilePath     : \F28379D_temp\28379d_CPU1_temp\06_user\memory_onchipflash.h
  * @Description  : 
  * Copyright (c) 2022 by https://www.dh-robotics.com, All Rights Reserved. 
  */
@@ -17,8 +17,6 @@ extern "C" {
 
 #include <F2837xD_device.h>
 #include "F28x_Project.h"
-
-#define WORDS_IN_FLASH_BUFFER 0xFF
 
 //
 // Defines
@@ -74,9 +72,9 @@ extern "C" {
 
 
 typedef struct{
-    Uint16 WDataBuff[WORDS_IN_FLASH_BUFFER + 1];
-    Uint16 RDataBuff[WORDS_IN_FLASH_BUFFER + 1];
-    Uint32 MaxDelayCount;//0-4294967295
+    Uint32 MaxDelayCount;               //0-4294967295,
+    Uint32 MaxStore16bitWords;          // 8192Byte = 8KByte
+    Uint32 Store16bitWordsCount;        //Load dynamically during initialization
 
 } DATA_ONCHIPFLASH_T;
 

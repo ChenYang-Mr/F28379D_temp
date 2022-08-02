@@ -2,22 +2,21 @@
  * @Author       : CY [yang.chen@dh-robotics.cn]
  * @Date         : 2022-07-08 19:15:35
  * @LastEditors  : CY [yang.chen@dh-robotics.cn]
- * @LastEditTime : 2022-08-01 20:15:58
+ * @LastEditTime : 2022-08-02 16:16:11
  * @FilePath     : \F28379D_temp\28379d_CPU1_temp\06_user\main_cpu1.c
- * @Description  : 
- * Copyright (c) 2022 by https://www.dh-robotics.com, All Rights Reserved. 
+ * @Description  :
+ * Copyright (c) 2022 by https://www.dh-robotics.com, All Rights Reserved.
  */
 //#include "Includes.h"
-
 
 //#include <F2837xD_device.h>
 #include "F2837xD_Ipc_drivers.h"
 
-#include "driverlib.h"
 #include "device.h"
+#include "driverlib.h"
 //#include "F2837xD_SysCtrl.h"
-#include "device_driver.h"
 #include "F2837xD_Pie_defines.h"
+#include "device_driver.h"
 //#include "F2837xD_GlobalPrototypes.h"
 //#include "application_protection.h"
 #include "device_memory.h"
@@ -33,6 +32,10 @@ Uint32 Data5;
 Uint64 Data6;
 float32 Data7;
 float64 Data8;
+Uint32 Data9;
+Uint64 Data10;
+float32 Data11;
+float64 Data12;
 
 void OnChipFlash_Write(void);
 void main(void)
@@ -96,31 +99,47 @@ void main(void)
     // Interrupt Service Routines (ISR).
     //
     InitPieVectTable();
-    MEMORY_T  *pHandle = &MEMORY;
+    MEMORY_T *pHandle = &MEMORY;
 
-    /* memory */
+size_t int16_Size = sizeof(int16);
+size_t int32_Size = sizeof(int32);
+size_t int64_Size = sizeof(int64);
+size_t Uint16_Size = sizeof(Uint16);
+size_t Uint32_Size = sizeof(Uint32);
+size_t Uint64_Size = sizeof(Uint64);
+size_t float32_Size = sizeof(float32);
+size_t float64_Size = sizeof(float64);
+
+     pHandle->DataWrite.member.Mdata1 = -1;
+     pHandle->DataWrite.member.Mdata2 = -2;
+     pHandle->DataWrite.member.Mdata3 = -3;
+     pHandle->DataWrite.member.Mdata4 = 4;
+     pHandle->DataWrite.member.Mdata5 = 5;
+     pHandle->DataWrite.member.Mdata6 = 6;
+     pHandle->DataWrite.member.Mdata7 = 7.5;
+     pHandle->DataWrite.member.Mdata8 = 8.5;
+     pHandle->DataWrite.member.Mdata9 = 44;
+     pHandle->DataWrite.member.Mdata10 = 666;
+     pHandle->DataWrite.member.Mdata11 = 9.9999;
+     pHandle->DataWrite.member.Mdata12 = 6.5526;
+
+    // /* memory */
     MEMORY.fInit(&MEMORY);
-    (*pHandle->DataWrite.Mdata1) = -1;
-    (*pHandle->DataWrite.Mdata2) = -2;
-    (*pHandle->DataWrite.Mdata3) = -3;
-    (*pHandle->DataWrite.Mdata4) = 4;
-    (*pHandle->DataWrite.Mdata5) = 5;
-    (*pHandle->DataWrite.Mdata6) = 6;
-    (*pHandle->DataWrite.Mdata7) = 7.5;
-    (*pHandle->DataWrite.Mdata8) = 8.5;
+     MEMORY.fWrite(&MEMORY);
+    MEMORY.fRead(&MEMORY);
 
-    MEMORY.fWrite(&MEMORY);
-    // MEMORY.fRead(&MEMORY);
-
-    Data1 = (*pHandle->DataRead.Mdata1);
-    Data2 = (*pHandle->DataRead.Mdata2);
-    Data3 = (*pHandle->DataRead.Mdata3);
-    Data4 = (*pHandle->DataRead.Mdata4);
-    Data5 = (*pHandle->DataRead.Mdata5);
-    Data6 = (*pHandle->DataRead.Mdata6);
-    Data7 = (*pHandle->DataRead.Mdata7);
-    Data8 = (*pHandle->DataRead.Mdata8);
-
+    Data1 = pHandle->DataRead.member.Mdata1;
+    Data2 = pHandle->DataRead.member.Mdata2;
+    Data3 = pHandle->DataRead.member.Mdata3;
+    Data4 = pHandle->DataRead.member.Mdata4;
+    Data5 = pHandle->DataRead.member.Mdata5;
+    Data6 = pHandle->DataRead.member.Mdata6;
+    Data7 = pHandle->DataRead.member.Mdata7;
+    Data8 = pHandle->DataRead.member.Mdata8;
+    Data9 = pHandle->DataRead.member.Mdata9;
+    Data10 = pHandle->DataRead.member.Mdata10;
+    Data11 = pHandle->DataRead.member.Mdata11;
+    Data12 = pHandle->DataRead.member.Mdata12;
 }
 #if 0
 //
