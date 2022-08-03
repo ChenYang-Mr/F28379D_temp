@@ -110,7 +110,7 @@ size_t Uint64_Size = sizeof(Uint64);
 size_t float32_Size = sizeof(float32);
 size_t float64_Size = sizeof(float64);
 
-     pHandle->DataWrite.member.Mdata1 = -1;
+     pHandle->DataWrite.member.Mdata1 = -3;
      pHandle->DataWrite.member.Mdata2 = -2;
      pHandle->DataWrite.member.Mdata3 = -3;
      pHandle->DataWrite.member.Mdata4 = 4;

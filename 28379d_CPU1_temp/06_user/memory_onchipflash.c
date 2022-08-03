@@ -13,7 +13,7 @@
  * <tr><td>2022-07-29       <td>1.0        <td>chen yang       <td>ÄÚÈÝ
  * </table>
  */
-
+#include "system_setting.h"
 #include "memory_onchipflash.h"
 #include "F021_F2837xD_C28x.h"
 #include "device_memory.h"
@@ -26,6 +26,8 @@
 #define ramFuncSection "ramfuncs"
 #endif
 #endif
+
+
 
 DATA_ONCHIPFLASH_T Data_OnChipFlash = {
     .MaxDelayCount = 50000,
@@ -92,7 +94,7 @@ MEMORY_STATUS_T OnChipFlash_Read(MEMORY_T *pHandle)
     // This function is required to initialize the Flash API based on system
     // frequency before any other Flash API operation can be performed.
     //
-    oReturnCheck = Fapi_initializeAPI(F021_CPU0_BASE_ADDRESS, 120);
+    oReturnCheck = Fapi_initializeAPI(F021_CPU0_BASE_ADDRESS, SYSTEM_FREQUENCY/1000);
 
     if (oReturnCheck != Fapi_Status_Success)
     {
@@ -177,7 +179,7 @@ MEMORY_STATUS_T OnChipFlash_Write(MEMORY_T *pHandle)
     // This function is required to initialize the Flash API based on system
     // frequency before any other Flash API operation can be performed.
     //
-    oReturnCheck = Fapi_initializeAPI(F021_CPU0_BASE_ADDRESS, 120);
+    oReturnCheck = Fapi_initializeAPI(F021_CPU0_BASE_ADDRESS, SYSTEM_FREQUENCY/1000);
 
     if (oReturnCheck != Fapi_Status_Success)
     {
